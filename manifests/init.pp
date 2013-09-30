@@ -3,12 +3,14 @@ class mariadb (
   $version = hiera( 'mysql_version', '' )
 ) {
 
+  # require 'mysql'
+
   if ( ( $mariadb::version == '' ) or ( $mariadb::version == undef ) ) {
     fail( 'Invalid or no version supplied' )
   }
 
-  $distro_lc  = inline_template("<%= operatingsystem.downcase %>")
-  $repo_version = inline_template("<%=@version.to_s.match(/\d+.\d+/)[0] %>")
+  $distro_lc  = inline_template("<%= @operatingsystem.downcase %>")
+  $repo_version = inline_template("<%=@version.to_s.match(/\\d+.\\d+/)[0] %>")
   $distro_url = "http://mirrors.supportex.net/mariadb/repo/${repo_version}/${distro_lc}"
   $mysql_package = hiera('mysql_package', $mysql::package)
 
